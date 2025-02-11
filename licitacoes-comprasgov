@@ -1,0 +1,60 @@
+-- Banco de Dados para Licitações Governamentais
+
+-- Criando a tabela de Órgãos Públicos
+CREATE TABLE orgao (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    codigo_siorg VARCHAR(20) UNIQUE
+);
+
+-- Criando a tabela de Modalidade da Licitação
+CREATE TABLE modalidade (
+    id SERIAL PRIMARY KEY,
+    descricao VARCHAR(100) NOT NULL
+);
+
+-- Criando a tabela de Licitações
+CREATE TABLE licitacao (
+    id SERIAL PRIMARY KEY,
+    numero VARCHAR(50) NOT NULL,
+    ano INT NOT NULL,
+    objeto TEXT,
+    data_abertura DATE,
+    id_orgao INT REFERENCES orgao(id),
+    id_modalidade INT REFERENCES modalidade(id)
+);
+
+-- Criando a tabela de Itens da Licitação
+CREATE TABLE item (
+    id SERIAL PRIMARY KEY,
+    descricao TEXT NOT NULL,
+    quantidade INT,
+    unidade VARCHAR(50),
+    valor_unitario DECIMAL(15,2),
+    id_licitacao INT REFERENCES licitacao(id)
+);
+
+-- Criando a tabela de Participantes (empresas que concorrem na licitação)
+CREATE TABLE participante (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    cnpj VARCHAR(18) UNIQUE,
+    id_licitacao INT REFERENCES licitacao(id)
+);
+
+-- Criando a tabela de Fornecedores (empresas vencedoras da licitação)
+CREATE TABLE fornecedor (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    cnpj VARCHAR(18) UNIQUE
+);
+
+-- Criando a tabela de Contratos gerados a partir da licitação
+CREATE TABLE contrato (
+    id SERIAL PRIMARY KEY,
+    numero VARCHAR(50) NOT NULL,
+    valor_total DECIMAL(15,2),
+    data_assinatura DATE,
+    id_licitacao INT REFERENCES licitacao(id),
+    id_fornecedor INT REFERENCES fornecedor(id)
+);
