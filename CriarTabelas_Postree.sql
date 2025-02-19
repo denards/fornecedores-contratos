@@ -49,24 +49,26 @@ CREATE TABLE cnpj (
     nome VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE participante (
-    licitacao_id BIGINT,
-    cnpj_codigo VARCHAR(20),
-    PRIMARY KEY (licitacao_id, cnpj_codigo),
-    FOREIGN KEY (licitacao_id) REFERENCES licitacao(id) ON DELETE CASCADE,
-    FOREIGN KEY (cnpj_codigo) REFERENCES cnpj(codigo) ON DELETE CASCADE
-);
-
 CREATE TABLE item (
     id BIGSERIAL PRIMARY KEY,
-    codigo VARCHAR(30) NOT NULL,
-    descricao TEXT NOT NULL,
-    quantidade INT NOT NULL,
-    valor DECIMAL(15,2),
-    licitacao_id BIGINT,
-    vencedor_codigo VARCHAR(20),  
+    licitacao_id BIGINT NOT NULL,
+    item_codigo VARCHAR(30) NOT NULL,
+    item_descricao VARCHAR(200) NOT NULL,
+    item_qtde INT NOT NULL,
+    item_valor DECIMAL(15,6),  
+    vencedor_cnpj VARCHAR(20),  
     FOREIGN KEY (licitacao_id) REFERENCES licitacao(id) ON DELETE CASCADE,
-    FOREIGN KEY (vencedor_codigo) REFERENCES cnpj(codigo) ON DELETE CASCADE
+    FOREIGN KEY (vencedor_cnpj) REFERENCES cnpj(codigo) ON DELETE CASCADE
+);
+
+
+CREATE TABLE participante (
+    id BIGSERIAL PRIMARY KEY,
+    item_id BIGINT NULL,
+    cnpj_codigo VARCHAR(20),
+    vencedor_flag CHAR(1),
+    FOREIGN KEY (item_id) REFERENCES item(id) ON DELETE CASCADE,
+    FOREIGN KEY (cnpj_codigo) REFERENCES cnpj(codigo) ON DELETE CASCADE
 );
 
 CREATE TABLE auditoria (
