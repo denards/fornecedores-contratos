@@ -6,7 +6,6 @@ SELECT
     l.numero AS licitacao_numero,
     l.ano AS licitacao_ano,
     l.mes AS licitacao_mes,
-    l.chave_unica,
     l.num_processo,
     l.objeto,
     l.situacao,
@@ -37,11 +36,11 @@ SELECT
     p.vencedor_flag
     
 FROM licitacao l
-LEFT JOIN orgao o ON l.orgao_codigo = o.codigo
-LEFT JOIN municipio m ON l.municipio_id = m.id
-LEFT JOIN uf u ON m.uf_sigla = u.sigla
-LEFT JOIN modalidade mod ON l.modalidade_codigo = mod.codigo
-LEFT JOIN item i ON l.id = i.licitacao_id
-LEFT JOIN participante p ON i.id = p.item_id
-LEFT JOIN cnpj ON p.cnpj_codigo = cnpj.codigo
+INNER JOIN orgao o ON l.orgao_codigo = o.codigo
+INNER JOIN municipio m ON l.municipio_id = m.id
+INNER JOIN uf u ON m.uf_sigla = u.sigla
+INNER JOIN modalidade mod ON l.modalidade_codigo = mod.codigo
+INNER JOIN item i ON l.id = i.licitacao_id
+INNER JOIN participante p ON i.id = p.item_id
+INNER JOIN cnpj ON p.cnpj_codigo = cnpj.codigo
 WHERE p.vencedor_flag = 'S'::CHAR;
