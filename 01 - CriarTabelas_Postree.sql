@@ -70,14 +70,14 @@ CREATE TABLE item (
     item_descricao VARCHAR(200) NOT NULL,
     item_qtde INT NOT NULL,
     item_valor DECIMAL(15,6),
-    vencedor_cnpj VARCHAR(20),  
-    FOREIGN KEY (licitacao_id) REFERENCES licitacao(id) ON DELETE CASCADE,
-    FOREIGN KEY (vencedor_cnpj) REFERENCES cnpj(codigo) ON DELETE CASCADE
+    vencedor_cnpj VARCHAR(20),
+    FOREIGN KEY (licitacao_id) REFERENCES licitacao(id) ON DELETE CASCADE
 );
 
 CREATE TABLE participante (
     id BIGSERIAL PRIMARY KEY,
     item_id BIGINT NULL,
+    item_codigo VARCHAR(30) NULL,
     cnpj_codigo VARCHAR(20) NOT NULL,
     vencedor_flag CHAR(1) CHECK (vencedor_flag IN ('S', 'N')),
     FOREIGN KEY (item_id) REFERENCES item(id) ON DELETE CASCADE,
